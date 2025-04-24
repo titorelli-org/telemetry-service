@@ -1,20 +1,24 @@
 import fastify from "fastify";
-import { env, logger, UpdateRepo } from "./lib";
+import { UpdateRepo, Wal, env, logger } from "./lib";
 import { MongoClient } from "mongodb";
 
-const mongoClient = new MongoClient(env.MONGO_URL);
-const repo = new UpdateRepo(mongoClient, "titorelli", "updates", logger);
-const server = fastify({ loggerInstance: logger });
+export * from "./lib";
 
-server.post<{
-  Body: Record<string, unknown>;
-}>("/update", async ({ body }) => {
-  await repo.insert(body);
-});
+export const createServer = async () => {
+  const mongoClient = await MongoClient.connect(env.MONGO_URL);
+  const updateRepo = new UpdateRepo(
+    new Wal("titorelli", "updates", logger),
+    mongoClient.db("titorelli").collection("updates"),
+    logger,
+  );
+  const server = fastify({ loggerInstance: logger, trustProxy: true });
 
-server.listen({
-  port: env.PORT,
-  host: env.HOST ?? "0.0.0.0",
-});
+  server.post<{ Body: Record<string, unknown> }>(
+    "/update",
+    async ({ body }) => {
+      await updateRepo.insert(body);
+    },
+  );
 
-mongoClient.connect();
+  return server;
+};
