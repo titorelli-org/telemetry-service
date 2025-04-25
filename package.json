@@ -11,10 +11,12 @@
   "license": "AGPL-3.0-only",
   "dependencies": {
     "@grammyjs/types": "^3.19.0",
+    "@types/lodash": "^4.17.16",
     "dotenv": "^16.4.7",
     "envalid": "^8.0.0",
     "fastify": "^5.2.2",
     "knex": "^3.1.0",
+    "lodash": "^4.17.21",
     "mkdirp": "^3.0.1",
     "mongodb": "^6.15.0",
     "nodemon": "^3.1.9",
