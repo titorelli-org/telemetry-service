@@ -45,8 +45,10 @@ export class ChatRepo {
   constructor(private collection: Collection, private logger: Logger) {}
 
   public get CreateOrUpdateTransaction() {
-    return CreateOrUpdateTransaction.bind(this.collection, this.logger) as new (
-      reporterId: number,
-    ) => CreateOrUpdateTransaction;
+    return CreateOrUpdateTransaction.bind(
+      null,
+      this.collection,
+      this.logger,
+    ) as new (reporterId: number) => CreateOrUpdateTransaction;
   }
 }
