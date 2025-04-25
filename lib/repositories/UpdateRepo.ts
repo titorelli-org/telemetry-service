@@ -9,10 +9,8 @@ export class UpdateRepo {
     private logger: Logger,
   ) {}
 
-  async insert(update: Record<string, unknown>) {
+  async insert(record: Record<string, unknown>) {
     try {
-      const record = { update };
-
       await this.wal?.insert(record);
 
       await this.collection?.insertOne(record);
