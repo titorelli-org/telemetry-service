@@ -11,11 +11,13 @@ export class UpdateRepo {
 
   async insert(update: Record<string, unknown>) {
     try {
-      await this.wal?.insert(update);
+      const record = { update };
 
-      await this.collection?.insertOne(update);
+      await this.wal?.insert(record);
 
-      this.logger.info(update);
+      await this.collection?.insertOne(record);
+
+      this.logger.info(record, "Incoming Update");
     } catch (error) {
       this.logger.error(error);
     }
