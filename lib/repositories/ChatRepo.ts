@@ -1,4 +1,4 @@
-import { isEqual } from "lodash";
+import { isEqual, omit } from "lodash";
 import type { Collection } from "mongodb";
 import type { Logger } from "pino";
 
@@ -14,13 +14,13 @@ class CreateOrUpdateTransaction {
   }
 
   private async createOrUpdate(chat: Record<string, unknown>) {
-    const { reporterId, ...prevChat } = await this.getById(chat.id as number);
+    const prevResult = await this.getById(chat.id as number);
 
-    if (prevChat == null) {
+    if (prevResult == null) {
       return this.insert(chat);
     }
 
-    if (false === isEqual(prevChat, chat)) {
+    if (false === isEqual(omit(prevResult, "reporterId"), chat)) {
       return this.updateById(chat.id as number, chat);
     }
   }
@@ -30,7 +30,7 @@ class CreateOrUpdateTransaction {
   }
 
   private async insert(chat: Record<string, unknown>) {
-    await this.collection.insertOne({ chat, reporterId: this.reporterId });
+    await this.collection.insertOne({ ...chat, reporterId: this.reporterId });
   }
 
   private async updateById(chatId: number, chat: Record<string, unknown>) {
