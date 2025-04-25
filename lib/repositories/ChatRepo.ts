@@ -34,10 +34,7 @@ class CreateOrUpdateTransaction {
   }
 
   private async updateById(chatId: number, chat: Record<string, unknown>) {
-    return this.collection.findOneAndUpdate(
-      { id: chatId },
-      { ...chat, reporterId: this.reporterId },
-    );
+    await this.collection.updateOne({ id: chatId }, { ...chat, reporterId: this.reporterId })
   }
 }
 
