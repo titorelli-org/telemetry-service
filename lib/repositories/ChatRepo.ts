@@ -1,6 +1,7 @@
 import { isEqual, omit } from "lodash";
 import type { Collection } from "mongodb";
 import type { Logger } from "pino";
+import type { ChatFullInfo } from "@grammyjs/types";
 
 class CreateOrUpdateTransaction {
   constructor(
@@ -9,11 +10,11 @@ class CreateOrUpdateTransaction {
     private reporterId: number,
   ) {}
 
-  public async run(chat: Record<string, unknown>) {
+  public async run(chat: ChatFullInfo) {
     return this.createOrUpdate(chat);
   }
 
-  private async createOrUpdate(chat: Record<string, unknown>) {
+  private async createOrUpdate(chat: ChatFullInfo) {
     const prevResult = await this.getById(chat.id as number);
 
     if (prevResult == null) {
@@ -21,7 +22,7 @@ class CreateOrUpdateTransaction {
     }
 
     if (false === isEqual(omit(prevResult, "reporterId"), chat)) {
-      return this.updateById(chat.id as number, chat);
+      return this.updateById(chat.id, chat);
     }
   }
 
@@ -29,12 +30,15 @@ class CreateOrUpdateTransaction {
     return this.collection.findOne({ id });
   }
 
-  private async insert(chat: Record<string, unknown>) {
+  private async insert(chat: ChatFullInfo) {
     await this.collection.insertOne({ ...chat, reporterId: this.reporterId });
   }
 
-  private async updateById(chatId: number, chat: Record<string, unknown>) {
-    await this.collection.updateOne({ id: chatId }, { ...chat, reporterId: this.reporterId })
+  private async updateById(chatId: number, chat: ChatFullInfo) {
+    await this.collection.updateOne(
+      { id: chatId },
+      { ...chat, reporterId: this.reporterId },
+    );
   }
 }
 
