@@ -31,15 +31,13 @@ export class UpdateRepo {
     try {
       await this.wal?.insert(record);
 
-      await this.collection?.insertOne(omit(record, "chat"));
-
-      await new this.chatRepo.CreateOrUpdateTransaction(record.me.id).run(
-        record.chat,
-      );
-
-      if (record.update.chat_member) {
-        await this.membersRepo.upsert(record.update);
-      }
+      await Promise.all([
+        this.collection?.insertOne(omit(record, "chat")),
+        this.chatRepo.upsert(record.me.id, record.chat),
+        record.update.chat_member
+          ? this.membersRepo.upsert(record.update)
+          : Promise.resolve(),
+      ]);
 
       this.logger.info(record, "Incoming Update");
     } catch (error) {
