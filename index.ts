@@ -1,8 +1,14 @@
-import { Service, UpdateRepo, Wal, env, logger } from "./lib";
 import { MongoClient } from "mongodb";
-import { ChatRepo } from "./lib/repositories/ChatRepo";
-import { MembersRepo } from "./lib/repositories/MembersRepo";
-import { TelemetryService } from "./lib/telemetry-service";
+import {
+  Service,
+  UpdateRepo,
+  ChatRepo,
+  MembersRepo,
+  TelemetryService,
+  Wal,
+  env,
+  logger,
+} from "./lib";
 
 const main = async () => {
   const mongoClient = await MongoClient.connect(env.MONGO_URL);
