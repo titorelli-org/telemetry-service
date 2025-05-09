@@ -1,27 +1,27 @@
 import type { Logger } from "pino";
 import fastify, { type FastifyInstance } from "fastify";
 import telemetryPlugin from "./fastify/plugins/telemerty";
-import { UpdateRepo } from "./repositories";
+import type { TelemetryService } from "./telemetry-service";
 
 export interface ServiceConfig {
   host: string;
   port: number;
-  updates: UpdateRepo;
+  telemetry: TelemetryService;
   logger: Logger;
 }
 
 export class Service {
   private readonly host: string;
   private readonly port: number;
-  private readonly updates: UpdateRepo;
+  private readonly telemetry: TelemetryService;
   private readonly logger: Logger;
   private server: FastifyInstance;
   private readonly ready: Promise<void>;
 
-  constructor({ updates, logger, host, port }: ServiceConfig) {
+  constructor({ telemetry, logger, host, port }: ServiceConfig) {
     this.host = host;
     this.port = port;
-    this.updates = updates;
+    this.telemetry = telemetry;
     this.logger = logger;
 
     this.ready = this.initialize();
@@ -37,7 +37,7 @@ export class Service {
     this.server = fastify({ loggerInstance: this.logger, trustProxy: true });
 
     await this.server.register(telemetryPlugin, {
-      updates: this.updates,
+      telemetry: this.telemetry,
       logger: this.logger,
     });
   }

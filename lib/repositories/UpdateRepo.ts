@@ -7,18 +7,9 @@ import type {
   Update,
   UserFromGetMe,
 } from "@grammyjs/types";
-import type { ChatRepo } from "./ChatRepo";
-import type { MembersRepo } from "./MembersRepo";
-import type { Wal } from "../wal";
 
 export class UpdateRepo {
-  constructor(
-    private wal: Wal | null,
-    private collection: Collection | null,
-    private chatRepo: ChatRepo,
-    private membersRepo: MembersRepo,
-    private logger: Logger,
-  ) {}
+  constructor(private collection: Collection | null, private logger: Logger) {}
 
   async insert<
     R extends {
@@ -29,17 +20,7 @@ export class UpdateRepo {
     },
   >(record: R) {
     try {
-      await this.wal?.insert(record);
-
-      await Promise.all([
-        this.collection?.insertOne(omit(record, "chat")),
-        this.chatRepo.upsert(record.me.id, record.chat),
-        record.update.chat_member
-          ? this.membersRepo.upsert(record.update)
-          : Promise.resolve(),
-      ]);
-
-      this.logger.info(record, "Incoming Update");
+      await this.collection?.insertOne(omit(record, "chat"));
     } catch (error) {
       this.logger.error(error);
     }
