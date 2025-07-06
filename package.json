@@ -1,6 +1,6 @@
 {
   "name": "@titorelli/telemetry-service",
-  "version": "0.1.0",
+  "version": "0.3.0",
   "description": "",
   "main": "index.ts",
   "scripts": {
@@ -12,6 +12,9 @@
   "dependencies": {
     "@grammyjs/types": "^3.20.0",
     "@openobserve/pino-openobserve": "^0.1.0",
+    "@titorelli-org/fastify-oidc-provider": "^1.0.1",
+    "@titorelli-org/fastify-protected-routes": "^0.3.0",
+    "@titorelli-org/jwks-store": "^0.1.1",
     "@types/lodash": "^4.17.16",
     "dotenv": "^16.4.7",
     "envalid": "^8.0.0",

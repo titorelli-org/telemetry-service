@@ -1,3 +1,4 @@
+import path from "node:path";
 import { MongoClient } from "mongodb";
 import {
   Service,
@@ -9,6 +10,7 @@ import {
   env,
   logger,
 } from "./lib";
+import { JwksStore } from "@titorelli-org/jwks-store";
 
 const main = async () => {
   const mongoClient = await MongoClient.connect(env.MONGO_URL);
@@ -32,6 +34,7 @@ const main = async () => {
       ),
       logger,
     }),
+    jwksStore: new JwksStore(path.join(__dirname, "data/jwks.json")),
     logger: logger,
   }).listen();
 };
