@@ -10,25 +10,28 @@
   "keywords": [],
   "license": "AGPL-3.0-only",
   "dependencies": {
-    "@grammyjs/types": "^3.20.0",
-    "@openobserve/pino-openobserve": "^0.1.0",
-    "@titorelli-org/fastify-oidc-provider": "^1.0.1",
-    "@titorelli-org/fastify-protected-routes": "^0.3.0",
-    "@titorelli-org/jwks-store": "^0.1.1",
-    "@types/lodash": "^4.17.16",
-    "dotenv": "^16.4.7",
-    "envalid": "^8.0.0",
-    "fastify": "^5.2.2",
+    "@grammyjs/types": "^3.22.2",
+    "@openobserve/pino-openobserve": "^1.0.0",
+    "@titorelli-org/fastify-oidc-provider": "^1.1.0",
+    "@titorelli-org/fastify-protected-routes": "^0.6.2",
+    "@titorelli-org/jwks-store": "^0.2.0",
+    "@types/lodash": "^4.17.20",
+    "dotenv": "^17.2.2",
+    "envalid": "^8.1.0",
+    "fastify": "^5.6.0",
     "fastify-plugin": "^5.0.1",
     "knex": "^3.1.0",
     "lodash": "^4.17.21",
     "mkdirp": "^3.0.1",
-    "mongodb": "^6.15.0",
-    "nodemon": "^3.1.9",
-    "pino": "^9.6.0",
-    "pino-pretty": "^13.0.0",
+    "mongodb": "^6.20.0",
+    "nodemon": "^3.1.10",
+    "pino": "^9.11.0",
+    "pino-pretty": "^13.1.1",
     "sqlite3": "^5.1.7",
     "ts-node": "^10.9.2",
-    "typescript": "^5.8.3"
+    "typescript": "^5.9.2"
+  },
+  "devDependencies": {
+    "npm-check-updates": "^18.3.0"
   }
 }
