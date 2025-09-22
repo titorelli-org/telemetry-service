@@ -53,7 +53,7 @@ export class Service {
     await this.server.register(protectedRoutes, {
       origin: env.TELEMETRY_ORIGIN,
       authorizationServers: [`${env.TELEMETRY_ORIGIN}/oidc`],
-      allRoutesRequireAuthorization: true,
+      allRoutesRequireAuthorization: false,
       logger: this.logger,
       async checkToken() {
         return true;
